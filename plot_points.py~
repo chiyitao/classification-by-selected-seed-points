@@ -1,0 +1,55 @@
+import matplotlib
+matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# plot
+
+first_class_x_array = []
+first_class_y_array = []
+for pt in first_class_points:
+    first_class_x_array.append(pt[0])
+    first_class_y_array.append(pt[1])
+
+second_class_x_array = []
+second_class_y_array = []
+for pt in second_class_points:
+    second_class_x_array.append(pt[0])
+    second_class_y_array.append(pt[1])
+
+third_class_x_array = []
+third_class_y_array = []
+for pt in third_class_points:
+    third_class_x_array.append(pt[0])
+    third_class_y_array.append(pt[1])
+
+
+min_x = np.min([np.min(first_class_x_array), np.min(second_class_x_array), np.min(third_class_x_array)])
+min_y = np.min([np.min(first_class_y_array), np.min(second_class_y_array), np.min(third_class_y_array)])
+max_x = np.max([np.max(first_class_x_array), np.max(second_class_x_array), np.max(third_class_x_array)])
+max_y = np.max([np.max(first_class_y_array), np.max(second_class_y_array), np.max(third_class_y_array)])
+
+actual_min_x = np.floor(min_x / 10) * 10
+actual_min_y = np.floor(min_y / 10) * 10
+actual_max_x = np.ceil(max_x / 10) * 10
+actual_max_y = np.ceil(max_y / 10) * 10
+
+x_ticks = np.arange(actual_min_x, actual_max_x, 10)
+y_ticks = np.arange(actual_min_y, actual_max_y, 10)
+
+
+plt.figure(figsize=((actual_max_x - actual_min_x) / 10, (actual_max_y - actual_min_y) / 10))
+plt.axis([actual_min_x, actual_max_x, actual_min_y, actual_max_y])
+
+plt.xticks(x_ticks)
+plt.yticks(y_ticks)
+
+axes = plt.subplot(111)
+
+type1 = axes.scatter(first_class_x_array, first_class_y_array, c='red')
+type2 = axes.scatter(second_class_x_array, second_class_y_array, c='green')
+type3 = axes.scatter(third_class_x_array, third_class_y_array, c='blue')
+
+plt.savefig('points.png')

@@ -1,0 +1,3 @@
+class seed_point():
+    def __init__(self, index, class_num):
+        self.
