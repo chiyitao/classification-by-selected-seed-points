@@ -7,11 +7,11 @@ import numpy as np
 # constant for colors
 class_colors = ['red', 'green', 'blue', 'purple', 'yellow', 'orange'] # TODO: more colors
 
-def plot_points(class_arrays, seed_points):
+def plot_points(class_arrays, seed_points, image_name):
     class_x_array = [] # two dimensions
     class_y_array = [] # two dimensions    
 
-    print 'len of class_arrays = {len_class_arrays}'.format(len_class_arrays = len(class_arrays))
+    # print 'len of class_arrays = {len_class_arrays}'.format(len_class_arrays = len(class_arrays))
     # store point pairs in class_x_array and class_y_array
     for i in range(0, len(class_arrays)):
         class_x_array.append([]) # prepare to append x value
@@ -91,7 +91,7 @@ def plot_points(class_arrays, seed_points):
     cur_seed_type = axes.scatter(seed_point_x_array, seed_point_y_array, c=class_colors[len(class_x_array)])
     
 
-    plt.savefig('points.png')
+    plt.savefig(image_name)
 
 
 if __name__ == '__main__':
