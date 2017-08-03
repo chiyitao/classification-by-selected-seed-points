@@ -5,6 +5,8 @@ matplotlib.use('Agg')
 import numpy as np
 import matplotlib.pyplot as plt
 
+import os
+
 
 
 from seed_point import seed_point, dst_point_set
@@ -45,19 +47,30 @@ classes_points.append(third_class_points)
 
 
 
-# generate seed for boundary plane in given range
-min_and_max_x_y = min_and_max(classes_points)
 
-# LIMITATION: for 2-dimension points
-seed_xs = min_and_max_x_y[0] + (min_and_max_x_y[2] - min_and_max_x_y[0]) * np.random.rand(seed_point_num, 1)
-seed_ys = min_and_max_x_y[1] + (min_and_max_x_y[3] - min_and_max_x_y[1]) * np.random.rand(seed_point_num, 1)
 
-seed_pts = []
-for i in range(0, len(seed_xs)):
-    seed_pts.append((seed_xs[i][0], seed_ys[i][0]))
-    # print (seed_xs[i])
-    # print (seed_ys[i])
+# if seed.npy does not exists, generate it
+if not os.path.exists('seed.npy'):
+    
+    # generate seed for boundary plane in given range
+    min_and_max_x_y = min_and_max(classes_points)
 
+    # LIMITATION: for 2-dimension points
+    seed_xs = min_and_max_x_y[0] + (min_and_max_x_y[2] - min_and_max_x_y[0]) * np.random.rand(seed_point_num, 1)
+    seed_ys = min_and_max_x_y[1] + (min_and_max_x_y[3] - min_and_max_x_y[1]) * np.random.rand(seed_point_num, 1)
+
+    seed_pts = []    
+    for i in range(0, len(seed_xs)):
+        seed_pts.append((seed_xs[i][0], seed_ys[i][0]))
+        # print (seed_xs[i])
+        # print (seed_ys[i])
+
+    # write to file
+    np.save('seed.npy', seed_pts)
+
+
+# load seed_pts
+seed_pts = np.load('seed.npy')
 
 # seed_pts = max_coord * np.random.rand(seed_point_num, dim_num)
 
@@ -66,15 +79,20 @@ seed_pts_rslt = []
 for i in range(0, len(seed_pts)):
     spt = seed_point(seed_pts[i])
     # first
-    first_class_dst_pt_set = dst_point_set(0, first_class_points)
-    spt.calc_dists(first_class_dst_pt_set)
+    # first_class_dst_pt_set = dst_point_set(0, first_class_points)
+    # spt.calc_dists(first_class_dst_pt_set)
     # second
-    second_class_dst_pt_set = dst_point_set(1, second_class_points)
-    spt.calc_dists(second_class_dst_pt_set)
+    # second_class_dst_pt_set = dst_point_set(1, second_class_points)
+    # spt.calc_dists(second_class_dst_pt_set)
     # third
-    third_class_dst_pt_set = dst_point_set(2, third_class_points)
-    spt.calc_dists(third_class_dst_pt_set)
+    # third_class_dst_pt_set = dst_point_set(2, third_class_points)
+    # spt.calc_dists(third_class_dst_pt_set)
+    
     # save the caclulated seed_point in the list
+    for j in range(0, len(classes_points)):
+        cur_class_dst_pt_set = dst_point_set(j, classes_points[j])
+        spt.calc_dists(cur_class_dst_pt_set)
+    
     seed_pts_rslt.append(spt)
 
 
@@ -91,7 +109,7 @@ for i in range(0, len(classes_points)): # TODO: class_num should calculated firs
         for k in range(0, len(index_and_divided_pairs)):
             if (i, j) == index_and_divided_pairs[k][1]: # equivalent to divided class pair
                 cur_index_and_pairs_points.append(seed_pts_rslt[index_and_divided_pairs[k][0]].coord)
-            # plot
+
 
         # debug cur_index_and_pairs_points
         for pt in cur_index_and_pairs_points:
@@ -108,6 +126,5 @@ for i in range(0, len(classes_points)): # TODO: class_num should calculated firs
 
 
 
-# plot
 # print 'len of classes_points = {len_classes_points}'.format(len_classes_points = len(classes_points))
 # plot_points(classes_points, seed_pts)

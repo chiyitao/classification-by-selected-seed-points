@@ -209,8 +209,10 @@ def plot_lines(axes, class_pts, seed_pts, image_name):
 
     cur_seed_type = axes.scatter(seed_point_x_array, seed_point_y_array, marker='x', c=class_colors[len(class_arrays)])
 
+    # drawing lines
     # for every seed in seed_pts, drawing a line to the class_pts
-    
+    for i in range(0, len(seed_pts)):
+        
 
     plt.savefig(image_name)
 
